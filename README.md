@@ -60,7 +60,3 @@ PLAN.md               Roadmap and design notes
 - It only works while AirPods are worn and connected to the Mac running Upright.
 - Detection uses the size of the head tilt, not its direction, so looking up for minutes also counts.
 - Alerts appear on the Mac only. iPhone support is on the roadmap.
-
-## Roadmap
-
-See [PLAN.md](PLAN.md). Next up: hourly and weekly posture trends, head-gesture shortcuts (nod, shake, tilt), and an iPhone app.
