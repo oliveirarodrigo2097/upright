@@ -33,6 +33,10 @@ enum Screenshots {
                   to: dir.appendingPathComponent("settings-\(suffix).png"))
             write(panel(IconLegend()), appearance: appearance,
                   to: dir.appendingPathComponent("icons-\(suffix).png"))
+            let heroModel = AppModel()
+            heroModel.applyDemo(slouching: false, deviation: 6, screenTime: 12 * 60 + 34, today: day)
+            write(MenuBarScene(model: heroModel), appearance: appearance,
+                  to: dir.appendingPathComponent("menubar-\(suffix).png"))
         }
         reportPanelHeights(day: day)
         print("Wrote screenshots to \(dir.path)")
@@ -87,10 +91,10 @@ enum Screenshots {
     }
 }
 
-/// The menu-bar icon states, for the README.
+/// The menu-bar icon states as one compact row, for the README.
 private struct IconLegend: View {
     private let items: [(String, String)] = [
-        ("figure.stand", "Upright"),
+        ("figure.stand", "Good posture"),
         ("exclamationmark.triangle.fill", "Slouching"),
         ("scope", "Needs calibration"),
         ("airpods", "AirPods not connected"),
@@ -98,17 +102,69 @@ private struct IconLegend: View {
     ]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Menu-bar icon").font(.headline)
+        HStack(alignment: .top, spacing: 0) {
             ForEach(items, id: \.0) { symbol, label in
-                HStack(spacing: 10) {
-                    Image(systemName: symbol).frame(width: 22)
+                VStack(spacing: 8) {
+                    Image(systemName: symbol)
+                        .font(.system(size: 18))
+                        .frame(height: 22)
                     Text(label)
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
                 }
-                .font(.callout)
+                .frame(width: 116)
             }
         }
-        .padding(14)
-        .frame(width: 300, alignment: .leading)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 10)
+    }
+}
+
+/// Illustration of Upright in the menu bar with its panel open, built from the real MenuView.
+private struct MenuBarScene: View {
+    let model: AppModel
+    private let width: CGFloat = 640
+
+    var body: some View {
+        VStack(alignment: .trailing, spacing: 6) {
+            menuBar
+            MenuView(model: model)
+                .background(.regularMaterial)
+                .background(Color(nsColor: .windowBackgroundColor).opacity(0.85))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.primary.opacity(0.15)))
+                .shadow(color: .black.opacity(0.25), radius: 18, y: 8)
+                .padding(.trailing, 150)   // drop down under the Upright icon
+                .padding(.bottom, 36)
+        }
+        .frame(width: width)
+        .background(desktop)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(2)
+    }
+
+    private var menuBar: some View {
+        HStack(spacing: 18) {
+            Spacer()
+            Image(systemName: "figure.stand")
+                .frame(width: 30, height: 22)
+                .background(RoundedRectangle(cornerRadius: 5).fill(Color.primary.opacity(0.18)))
+            Image(systemName: "battery.75percent")
+            Image(systemName: "wifi")
+            Image(systemName: "magnifyingglass")
+            Image(systemName: "switch.2")
+            Text("Tue 24 Nov  9:41")
+        }
+        .font(.system(size: 13, weight: .medium))
+        .padding(.horizontal, 14)
+        .frame(height: 28)
+        .background(.bar)
+    }
+
+    private var desktop: some View {
+        LinearGradient(
+            colors: [Color(red: 0.36, green: 0.52, blue: 0.86), Color(red: 0.62, green: 0.45, blue: 0.80)],
+            startPoint: .topLeading, endPoint: .bottomTrailing)
     }
 }
