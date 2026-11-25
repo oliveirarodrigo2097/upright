@@ -72,8 +72,7 @@ struct MenuView: View {
                         .monospacedDigit()
                         .foregroundStyle(dev > limit ? .orange : .secondary)
                 }
-                ProgressView(value: min(dev, limit * 2), total: limit * 2)
-                    .tint(dev > limit ? .orange : .green)
+                TiltBar(fraction: min(dev, limit * 2) / (limit * 2), over: dev > limit)
             }
             if model.breaksEnabled {
                 HStack {
@@ -202,7 +201,7 @@ struct MenuView: View {
         }
         switch model.postureState {
         case .uncalibrated: return "Needs calibration"
-        case .upright: return "Upright"
+        case .upright: return "Good posture"
         case .slouching: return "Slouching"
         }
     }
@@ -215,5 +214,28 @@ struct MenuView: View {
     private func clock(_ t: TimeInterval) -> String {
         let s = Int(t)
         return String(format: "%d:%02d", s / 60, s % 60)
+    }
+}
+
+/// Tilt meter: fills toward twice the limit, with a tick at the limit.
+/// Drawn by hand because the system bar ignores tint colours on macOS.
+private struct TiltBar: View {
+    let fraction: Double
+    let over: Bool
+
+    var body: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                Capsule().fill(Color.primary.opacity(0.1))
+                Capsule()
+                    .fill(over ? Color.orange : Color.green)
+                    .frame(width: max(6, geo.size.width * fraction))
+                Rectangle()
+                    .fill(Color.primary.opacity(0.35))
+                    .frame(width: 1.5)
+                    .offset(x: geo.size.width / 2)
+            }
+        }
+        .frame(height: 6)
     }
 }

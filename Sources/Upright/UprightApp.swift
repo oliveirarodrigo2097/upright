@@ -33,6 +33,15 @@ struct UprightApp: App {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
+        let args = CommandLine.arguments
+        if let i = args.firstIndex(of: "--screenshots") {
+            let dir = i + 1 < args.count ? args[i + 1] : "docs/screenshots"
+            MainActor.assumeIsolated {
+                Screenshots.render(to: URL(fileURLWithPath: dir))
+                NSApplication.shared.terminate(nil)
+            }
+            return
+        }
         Task { @MainActor in await AppModel.shared.start() }
     }
 

@@ -11,6 +11,19 @@ Everything runs on your Mac. No account, no server, and no motion data leaves yo
 - **Menu-bar status.** The icon shows whether you're upright, slouching or disconnected. The panel shows live head tilt, screen time since your last break, today's upright percentage and alert counts.
 - **Settings.** Tilt limit, how long before an alert, reminder interval, on/off switches for each feature, and pause for 30 min, 1 h or 2 h.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/upright-dark.png"><img src="docs/screenshots/upright-light.png" alt="Menu panel with good posture: head tilt 6° of a 15° limit, 12:34 screen time since the last break, 83% upright today" width="300"></picture><br><sub>Good posture</sub></td>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/slouching-dark.png"><img src="docs/screenshots/slouching-light.png" alt="Menu panel while slouching: head tilt 23° of a 15° limit shown in orange" width="300"></picture><br><sub>Slouching</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/settings-dark.png"><img src="docs/screenshots/settings-light.png" alt="Settings: posture alerts on, 15° tilt limit, alert after 2 min, eye-break reminders every 20 min" width="300"></picture><br><sub>Settings</sub></td>
+    <td align="center" valign="top"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/icons-dark.png"><img src="docs/screenshots/icons-light.png" alt="Menu-bar icon states: upright, slouching, needs calibration, AirPods not connected, paused" width="300"></picture><br><sub>Menu-bar icon states</sub></td>
+  </tr>
+</table>
+
 ## Requirements
 
 - macOS 14 (Sonoma) or later
@@ -44,6 +57,14 @@ swift test
 
 The detection logic lives in `UprightCore`, has no Apple-framework dependencies, and is tested with Swift Testing. The tests cover alert timing, hysteresis, cooldown, calibration, break detection, yaw wrap-around and drift.
 
+### Regenerating the screenshots
+
+The README images come from the app's real menu view, rendered with demo data in light and dark mode:
+
+```bash
+scripts/bundle.sh && build/Upright.app/Contents/MacOS/Upright --screenshots docs/screenshots
+```
+
 ## Project layout
 
 ```
@@ -52,6 +73,7 @@ Sources/
   Upright/            App: MotionService (Core Motion), Notifier, AppModel, menu-bar UI
 Tests/UprightCoreTests/
 scripts/bundle.sh     Build + app bundle
+docs/screenshots/     README images (generated, see above)
 PLAN.md               Roadmap and design notes
 ```
 

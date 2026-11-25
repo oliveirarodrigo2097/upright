@@ -24,6 +24,17 @@ final class AppModel {
     var postureEnabled: Bool { didSet { applySettings() } }
     var breaksEnabled: Bool { didSet { applySettings() } }
 
+    /// Puts the model in a fixed state for README screenshots (`Upright --screenshots <dir>`).
+    /// Never started, so it reads no motion and posts no notifications.
+    func applyDemo(slouching: Bool, deviation: Double, screenTime: TimeInterval, today: DayStats) {
+        posture.baselinePitch = 0
+        connection = .connected
+        postureState = slouching ? .slouching(since: 0) : .upright
+        deviationDegrees = deviation
+        self.screenTime = screenTime
+        self.today = today
+    }
+
     var isCalibrated: Bool { posture.baselinePitch != nil }
     var isPaused: Bool { pausedUntil.map { $0 > Date() } ?? false }
 
