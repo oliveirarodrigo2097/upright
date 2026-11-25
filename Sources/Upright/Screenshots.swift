@@ -18,10 +18,6 @@ enum Screenshots {
         let states: [(name: String, configure: (AppModel) -> Void)] = [
             ("upright", { $0.applyDemo(slouching: false, deviation: 6, screenTime: 12 * 60 + 34, today: day) }),
             ("slouching", { $0.applyDemo(slouching: true, deviation: 23, screenTime: 18 * 60 + 5, today: day) }),
-            ("settings", {
-                $0.applyDemo(slouching: false, deviation: 4, screenTime: 3 * 60 + 10, today: day)
-                $0.showSettings = true
-            }),
         ]
 
         for (suffix, appearance) in [("light", NSAppearance.Name.aqua), ("dark", .darkAqua)] {
@@ -31,10 +27,32 @@ enum Screenshots {
                 write(panel(MenuView(model: model)), appearance: appearance,
                       to: dir.appendingPathComponent("\(state.name)-\(suffix).png"))
             }
+            let settingsModel = AppModel()
+            settingsModel.applyDemo(slouching: false, deviation: 4, screenTime: 0, today: day)
+            write(panel(SettingsView(model: settingsModel)), appearance: appearance,
+                  to: dir.appendingPathComponent("settings-\(suffix).png"))
             write(panel(IconLegend()), appearance: appearance,
                   to: dir.appendingPathComponent("icons-\(suffix).png"))
         }
+        reportPanelHeights(day: day)
         print("Wrote screenshots to \(dir.path)")
+    }
+
+    /// Prints each panel state's natural height against MenuView.panelHeight.
+    private static func reportPanelHeights(day: DayStats) {
+        let cases: [(String, (AppModel) -> Void)] = [
+            ("live", { $0.applyDemo(slouching: false, deviation: 6, screenTime: 60, today: day) }),
+            ("live, paused", { $0.applyDemo(slouching: false, deviation: 6, screenTime: 60, today: day); $0.pause(for: 60) }),
+            ("not connected", { _ in }),
+            ("needs calibration", { $0.applyDemo(slouching: false, deviation: 0, screenTime: 0, today: day); $0.forgetCalibrationForDemo() }),
+        ]
+        for (name, configure) in cases {
+            let m = AppModel()
+            configure(m)
+            let h = NSHostingView(rootView: MenuView(model: m).content).fittingSize.height
+            print(String(format: "panel %-18@ %4.0f pt (limit %.0f)%@", name as NSString, h, MenuView.panelHeight,
+                         h > MenuView.panelHeight ? " TOO TALL" : ""))
+        }
     }
 
     private static func panel(_ content: some View) -> some View {

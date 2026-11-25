@@ -9,7 +9,7 @@ Everything runs on your Mac. No account, no server, and no motion data leaves yo
 - **Posture alerts.** Calibrate once while sitting up straight. If your head stays tilted more than 15° from that position for 2 minutes, you get a notification. A quick look at your phone won't trigger it, and alerts repeat at most every 10 minutes.
 - **Eye-break reminders (20-20-20).** After 20 minutes facing the screen, Upright reminds you to look at something 20 ft (6 m) away for 20 seconds. It notices real breaks on its own: looking away for 20 s, moving around, or taking your AirPods out for a minute.
 - **Menu-bar status.** The icon shows whether you're upright, slouching or disconnected. The panel shows live head tilt, screen time since your last break, today's upright percentage and alert counts.
-- **Settings.** Tilt limit, how long before an alert, reminder interval, on/off switches for each feature, and pause for 30 min, 1 h or 2 h.
+- **Settings window.** Tilt limit, how long before an alert, reminder interval and on/off switches for each feature. Pause for 30 min, 1 h or 2 h right from the panel.
 
 ## Screenshots
 
@@ -19,7 +19,7 @@ Everything runs on your Mac. No account, no server, and no motion data leaves yo
     <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/slouching-dark.png"><img src="docs/screenshots/slouching-light.png" alt="Menu panel while slouching: head tilt 23° of a 15° limit shown in orange" width="300"></picture><br><sub>Slouching</sub></td>
   </tr>
   <tr>
-    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/settings-dark.png"><img src="docs/screenshots/settings-light.png" alt="Settings: posture alerts on, 15° tilt limit, alert after 2 min, eye-break reminders every 20 min" width="300"></picture><br><sub>Settings</sub></td>
+    <td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/settings-dark.png"><img src="docs/screenshots/settings-light.png" alt="Settings: posture alerts on, 15° tilt limit, alert after 2 min, eye-break reminders every 20 min" width="300"></picture><br><sub>Settings window</sub></td>
     <td align="center" valign="top"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/icons-dark.png"><img src="docs/screenshots/icons-light.png" alt="Menu-bar icon states: upright, slouching, needs calibration, AirPods not connected, paused" width="300"></picture><br><sub>Menu-bar icon states</sub></td>
   </tr>
 </table>

@@ -4,9 +4,19 @@ import UprightCore
 
 struct MenuView: View {
     @Bindable var model: AppModel
+    @Environment(\.openSettings) private var openSettings
 
+    /// Fixed panel height. The menu-bar window doesn't resize after it opens,
+    /// so a panel that changes height gets clipped. Fits the tallest state.
+    static let panelHeight: CGFloat = 310
 
     var body: some View {
+        content
+            .frame(width: 300, height: Self.panelHeight, alignment: .top)
+    }
+
+    /// The panel at its natural height (used to check it fits `panelHeight`).
+    var content: some View {
         VStack(alignment: .leading, spacing: 12) {
             header
             Divider()
@@ -23,8 +33,7 @@ struct MenuView: View {
             }
             Divider()
             todaySection
-            Divider()
-            DisclosureGroup("Settings", isExpanded: $model.showSettings) { settings }
+            Spacer(minLength: 0)
             Divider()
             footer
         }
@@ -134,26 +143,6 @@ struct MenuView: View {
         .font(.callout)
     }
 
-    private var settings: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Toggle("Posture alerts", isOn: $model.postureEnabled)
-            labeledSlider("Tilt limit", value: $model.postureSettings.thresholdDegrees, in: 8...30, step: 1) {
-                "\(Int($0))°"
-            }
-            labeledSlider("Alert after", value: $model.postureSettings.sustainSeconds, in: 30...600, step: 30) {
-                AppModel.format($0)
-            }
-            Toggle("Eye-break reminders", isOn: $model.breaksEnabled)
-            labeledSlider("Remind every", value: $model.breakSettings.intervalSeconds, in: 600...3600, step: 300) {
-                AppModel.format($0)
-            }
-            Button("Send test notification") { model.sendTestNotification() }
-                .controlSize(.small)
-        }
-        .padding(.top, 6)
-        .font(.callout)
-    }
-
     private var footer: some View {
         HStack {
             if model.isPaused {
@@ -167,6 +156,10 @@ struct MenuView: View {
                 .fixedSize()
             }
             Spacer()
+            Button("Settings…") {
+                openSettings()
+                NSApplication.shared.activate(ignoringOtherApps: true)
+            }
             Button("Quit") {
                 model.saveNow()
                 NSApplication.shared.terminate(nil)
@@ -176,20 +169,6 @@ struct MenuView: View {
     }
 
     // MARK: Helpers
-
-    private func labeledSlider(
-        _ title: String, value: Binding<Double>, in range: ClosedRange<Double>, step: Double,
-        format: @escaping (Double) -> String
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack {
-                Text(title)
-                Spacer()
-                Text(format(value.wrappedValue)).monospacedDigit().foregroundStyle(.secondary)
-            }
-            Slider(value: value, in: range, step: step)
-        }
-    }
 
     private var statusText: String {
         if model.isPaused { return "Paused" }

@@ -14,6 +14,10 @@ struct UprightApp: App {
             Image(systemName: iconName)
         }
         .menuBarExtraStyle(.window)
+
+        Settings {
+            SettingsView(model: model)
+        }
     }
 
     private var iconName: String {

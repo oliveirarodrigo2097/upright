@@ -7,9 +7,6 @@ import UprightCore
 final class AppModel {
     static let shared = AppModel()
 
-    // UI-only state (kept here because SwiftUI's @State macro needs Xcode's plugin).
-    var showSettings = false
-
     // MARK: Published (refreshed ~4×/s, not per sample)
     private(set) var connection: ConnectionState = .waiting
     private(set) var postureState: PostureState = .uncalibrated
@@ -33,6 +30,10 @@ final class AppModel {
         deviationDegrees = deviation
         self.screenTime = screenTime
         self.today = today
+    }
+
+    func forgetCalibrationForDemo() {
+        posture.baselinePitch = nil
     }
 
     var isCalibrated: Bool { posture.baselinePitch != nil }
