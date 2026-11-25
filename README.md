@@ -69,14 +69,6 @@ On first launch, allow **Motion & Fitness** access and **notifications** when ma
 
 Recalibrate if you change chair, desk or monitor height.
 
-## Tests
-
-```bash
-swift test
-```
-
-The detection logic lives in `UprightCore`, has no Apple-framework dependencies, and is tested with Swift Testing. The tests cover alert timing, hysteresis, cooldown, calibration, break detection, yaw wrap-around and drift.
-
 
 ## Project layout
 
