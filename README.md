@@ -57,13 +57,6 @@ swift test
 
 The detection logic lives in `UprightCore`, has no Apple-framework dependencies, and is tested with Swift Testing. The tests cover alert timing, hysteresis, cooldown, calibration, break detection, yaw wrap-around and drift.
 
-### Regenerating the screenshots
-
-The README images come from the app's real menu view, rendered with demo data in light and dark mode:
-
-```bash
-scripts/bundle.sh && build/Upright.app/Contents/MacOS/Upright --screenshots docs/screenshots
-```
 
 ## Project layout
 
