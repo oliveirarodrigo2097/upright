@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 import UprightCore
 
@@ -35,9 +36,45 @@ struct SettingsView: View {
                 Button("Recalibrate") { model.beginCalibration() }
                     .disabled(model.connection != .connected)
             }
+            if let result = model.testNotificationResult {
+                testResult(result)
+            }
         }
         .padding(20)
         .frame(width: 360)
+    }
+
+    @ViewBuilder
+    private func testResult(_ result: Notifier.TestResult) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            switch result {
+            case .sent:
+                Label("Sent. If no banner appeared, a Focus mode such as Do Not Disturb may be hiding it. Check Control Center, or look in Notification Center (click the clock).",
+                      systemImage: "checkmark.circle")
+            case .sentQuietly:
+                Label("Sent, but Upright's alert style is set to None, so it only goes to Notification Center. Choose Banners or Alerts.",
+                      systemImage: "exclamationmark.triangle")
+            case .notAllowed:
+                Label("Notifications are turned off for Upright, so posture and break alerts can't appear.",
+                      systemImage: "xmark.octagon")
+            case .failed(let message):
+                Label("Couldn't send: \(message)", systemImage: "xmark.octagon")
+            case .noBundle:
+                Label("Notifications only work when Upright runs as an app (scripts/bundle.sh).", systemImage: "xmark.octagon")
+            }
+            if result != .sent {
+                Button("Open Notification Settings") {
+                    let id = Bundle.main.bundleIdentifier ?? ""
+                    if let url = URL(string: "x-apple.systempreferences:com.apple.Notifications-Settings.extension?id=\(id)") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+                .controlSize(.small)
+            }
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     private func labeledSlider(

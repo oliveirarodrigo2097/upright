@@ -84,6 +84,12 @@ final class AppModel {
         guard !started else { return }
         started = true
         await notifier.setUp()
+        // `Upright --test-notification` prints what happens to the sample alert.
+        if CommandLine.arguments.contains("--test-notification") {
+            let result = await notifier.sendTest()
+            FileHandle.standardError.write(Data("Upright test notification: \(result)\n".utf8))
+            testNotificationResult = result
+        }
         motion.start()
     }
 
@@ -112,8 +118,13 @@ final class AppModel {
         publish(force: true)
     }
 
+    /// Result of the last "Send test notification", shown under the button.
+    private(set) var testNotificationResult: Notifier.TestResult?
+
     func sendTestNotification() {
-        notifier.post(id: "test", title: "Upright is working", body: "This is how posture and break alerts will look.")
+        Task {
+            testNotificationResult = await notifier.sendTest()
+        }
     }
 
     func saveNow() {
