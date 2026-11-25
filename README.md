@@ -10,8 +10,10 @@ Everything runs on your Mac. No account, no server, and no motion data leaves yo
 
 ## Install
 
+Paste this into Terminal:
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/oliveirarodrigo2097/upright/main/scripts/install.sh | bash
+curl -fsSL oliveirarodrigo2097.github.io/upright/install | bash
 ```
 
 This downloads the latest release into `/Applications` and opens it. Then put in your AirPods, click the figure icon in the menu bar and choose **Calibrate**. When macOS asks, allow **Motion & Fitness** access and **notifications**.
@@ -88,8 +90,8 @@ Sources/
   Upright/            App: MotionService (Core Motion), Notifier, AppModel, menu-bar UI
 Tests/UprightCoreTests/
 scripts/bundle.sh     Build + app bundle
-scripts/install.sh    One-line installer (downloads the latest release)
 scripts/release.sh    Build a universal zip and publish a GitHub release
+docs/install          One-line installer, served by GitHub Pages
 docs/screenshots/     README images, rendered from the app's own views (Upright --screenshots)
 PLAN.md               Roadmap and design notes
 ```

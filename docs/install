@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Installs the latest Upright release into /Applications and opens it.
 #
-#   curl -fsSL https://raw.githubusercontent.com/oliveirarodrigo2097/upright/main/scripts/install.sh | bash
+#   curl -fsSL oliveirarodrigo2097.github.io/upright/install | bash
+#
+# Served by GitHub Pages from docs/ on main (docs/install in the repo).
 #
 # Options (environment variables):
 #   UPRIGHT_ZIP=path    install from a local Upright.zip instead of downloading
